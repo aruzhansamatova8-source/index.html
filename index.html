@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101114">
+<title>FitLife — спортивный магазин</title>
+<style>
+:root {
+  --bg: #101114;
+  --panel: #191b20;
+  --text: #f5f5f5;
+  --muted: #a7a9b0;
+  --line: #30323a;
+  --accent: #ff782e;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+img { display: block; max-width: 100%; }
+.container {
+  width: min(1160px, calc(100% - 40px));
+  margin: auto;
+}
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #101114f2;
+  border-bottom: 1px solid var(--line);
+}
+.header {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 800;
+}
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #171717;
+}
+.brand span:last-child { color: var(--accent); }
+nav {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+}
+nav a:hover { color: var(--accent); }
+.header-actions { display: flex; gap: 10px; }
+.cart-button, .menu-button {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+.cart-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: 5px;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: #171717;
+  font-size: 12px;
+  font-weight: bold;
+}
+.menu-button { display: none; }
+.hero {
+  padding: 75px 0;
+  background: radial-gradient(ellipse at 80% 30%, #ff782e20, transparent 40%);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 45px;
+}
+.eyebrow {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.hero h1 {
+  max-width: 650px;
+  margin: 15px 0;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+.hero h1 span { color: var(--accent); }
+.hero p {
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 17px;
+}
+.btn {
+  display: inline-block;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #171717;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn:hover { background: #ff9a57; }
+.hero-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.hero-image img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  filter: brightness(.8);
+}
+.hero-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #101114e8;
+  font-weight: bold;
+}
+.hero-badge small {
+  display: block;
+  color: var(--muted);
+  font-weight: normal;
+}
+.section { padding: 70px 0; }
+.section h2 {
+  margin: 8px 0;
+  font-size: clamp(30px, 4vw, 42px);
+}
+.section-intro {
+  max-width: 600px;
+  color: var(--muted);
+}
+.catalog-tools {
+  display: flex;
+  gap: 12px;
+  margin: 25px 0;
+}
+.search, .filter {
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+}
+.search { width: min(340px, 100%); }
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  transition: .2s;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+}
+.product-image {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #25272c;
+}
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  padding: 15px;
+}
+.category {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.product-info h3 { margin: 0; font-size: 17px; }
+.product-info p {
+  flex: 1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.product-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 5px;
+}
+.price { font-size: 18px; font-weight: bold; }
+.add-button {
+  padding: 10px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #171717;
+  font-weight: bold;
+  cursor: pointer;
+}
+.add-button:hover { background: #ff9a57; }
+.empty-results {
+  grid-column: 1 / -1;
+  padding: 30px;
+  color: var(--muted);
+  text-align: center;
+}
+.about { background: #17191d; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+}
+.about-copy p { color: var(--muted); }
+.about-visual {
+  overflow: hidden;
+  border-radius: 20px;
+}
+.about-visual img {
+  width: 100%;
+  min-height: 300px;
+  object-fit: cover;
+}
+.mission {
+  margin-top: 25px;
+  padding-left: 16px;
+  border-left: 3px solid var(--accent);
+}
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 30px;
+}
+.benefit {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: #1c1e23;
+}
+.benefit-icon {
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 25px;
+}
+.benefit h3 { margin: 0 0 7px; font-size: 16px; }
+.benefit p { margin: 0; color: var(--muted); font-size: 13px; }
+.faq-wrap { max-width: 850px; margin: auto; }
+.faq-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 25px;
+}
+.faq-item {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--panel);
+}
+.faq-item summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 17px 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.faq-item summary::after {
+  content: "+";
+  color: var(--accent);
+  font-size: 22px;
+}
+.faq-item[open] summary::after { content: "−"; }
+.faq-answer {
+  padding: 0 20px 17px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.contacts {
+  background: linear-gradient(130deg, #1a1c21, #121316);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 35px;
+}
+.contact-card {
+  padding: 25px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+}
+.contact-line {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 0;
+}
+.contact-line + .contact-line {
+  border-top: 1px solid var(--line);
+}
+.contact-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #ff782e20;
+  color: var(--accent);
+}
+.contact-line small {
+  display: block;
+  color: var(--muted);
+}
+.demo-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+.footer {
+  padding: 25px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  visibility: hidden;
+  background: #0009;
+  opacity: 0;
+  transition: .2s;
+}
+.overlay.active { visibility: visible; opacity: 1; }
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100%);
+  height: 100vh;
+  border-left: 1px solid var(--line);
+  background: #17191d;
+  box-shadow: 0 15px 50px #0008;
+  transform: translateX(105%);
+  transition: transform .25s;
+}
+.cart-panel.open { transform: translateX(0); }
+.cart-header, .cart-footer {
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-header h2 { margin: 0; }
+.icon-button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 20px;
+}
+.cart-items { flex: 1; overflow: auto; padding: 15px 20px; }
+.cart-empty { padding: 40px 10px; color: var(--muted); text-align: center; }
+.cart-item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cart-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+.cart-item h3 { margin: 0; font-size: 13px; }
+.cart-item p { margin: 3px 0; color: var(--muted); font-size: 12px; }
+.quantity { display: flex; align-items: center; gap: 8px; }
+.quantity button {
+  width: 25px;
+  height: 25px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+.remove {
+  border: 0;
+  background: transparent;
+  color: #ff9a78;
+  cursor: pointer;
+  font-size: 12px;
+}
+.cart-footer { border-top: 1px solid var(--line); border-bottom: 0; }
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.cart-footer .btn { width: 100%; }
+.cart-disclaimer {
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+.toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  z-index: 70;
+  padding: 11px 17px;
+  border-radius: 10px;
+  background: #f5f5f5;
+  color: #171717;
+  font-size: 13px;
+  font-weight: bold;
+  opacity: 0;
+  transform: translate(-50%, 15px);
+  transition: .2s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (max-width: 980px) {
+  .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .container { width: calc(100% - 30px); }
+  .header { min-height: 66px; }
+  .menu-button { display: inline-block; }
+  nav {
+    display: none;
+    position: absolute;
+    top: 66px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 12px;
+    background: #15171b;
+  }
+  nav.open { display: flex; }
+  nav a { padding: 10px; }
+  .hero { padding: 50px 0; }
+  .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: clamp(40px, 11vw, 58px); }
+  .hero-image img { height: 280px; }
+  .section { padding: 52px 0; }
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .product-info { padding: 11px; }
+  .product-info h3 { font-size: 15px; }
+  .product-info p { font-size: 12px; }
+  .benefits { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 360px) {
+  .container { width: calc(100% - 22px); }
+  .product-grid { gap: 8px; }
+  .product-info { padding: 9px; }
+  .product-info h3 { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container header">
+    <a class="brand" href="#home"><span class="brand-mark">F</span>Fit<span>Life</span></a>
+    <nav id="mainNav" aria-label="Основная навигация">
+      <a href="#home">Главная</a>
+      <a href="#catalog">Каталог</a>
+      <a href="#about">О компании</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-button" id="openCart" type="button">Корзина <span class="cart-count" id="cartCount">0</span></button>
+      <button class="menu-button" id="menuToggle" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+<main>
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">ТВОЯ ЭНЕРГИЯ. ТВОЙ РИТМ.</div>
+      <h1>Двигайся к <span>своим</span> целям</h1>
+      <p>Спортивные товары для тренировок, восстановления и активной жизни. Собери свой комплект для движения — дома или в зале.</p>
+      <a class="btn" href="#catalog">Перейти в каталог →</a>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=85" alt="Современный спортивный зал">
+      <div class="hero-badge">Тренируйся в своём темпе<small>FitLife — пространство движения</small></div>
+    </div>
+  </div>
+</section>
+<section class="section" id="catalog">
+  <div class="container">
+    <div class="eyebrow">ВЫБИРАЙ СВОЁ</div>
+    <h2>Каталог товаров</h2>
+    <p class="section-intro">Инвентарь для силовых и кардиотренировок, йоги и домашних занятий.</p>
+    <div class="catalog-tools">
+      <input class="search" id="searchInput" type="search" placeholder="Найти товар..." aria-label="Поиск товаров">
+      <select class="filter" id="categoryFilter" aria-label="Категория">
+        <option value="all">Все категории</option>
+        <option value="Силовой инвентарь">Силовой инвентарь</option>
+        <option value="Фитнес и кардио">Фитнес и кардио</option>
+        <option value="Йога и восстановление">Йога и восстановление</option>
+        <option value="Аксессуары">Аксессуары</option>
+      </select>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<section class="section about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-copy">
+        <div class="eyebrow">ЗНАКОМЬТЕСЬ С FITLIFE</div>
+        <h2>О компании</h2>
+        <p>FitLife — учебный интернет-магазин спортивных товаров и аксессуаров для фитнеса, силовых и кардиотренировок, йоги и домашних занятий. Каталог объединяет инвентарь для разных форм физической активности и уровней подготовки.</p>
+        <p>Мы стремимся сделать знакомство со спортивными товарами понятным, а выбор инвентаря — удобным и осознанным.</p>
+        <div class="mission">
+          <strong>Наша миссия</strong>
+          <p>Помогать людям находить подходящие инструменты для активной жизни и поддерживать стремление двигаться к личным целям.</p>
+        </div>
+      </div>
+      <div class="about-visual">
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1000&q=85" alt="Спортсмен занимается силовой тренировкой">
+      </div>
+    </div>
+    <div class="benefits">
+      <article class="benefit">
+        <div class="benefit-icon">✦</div>
+        <h3>Разнообразие выбора</h3>
+        <p>В каталоге собраны товары для силовых занятий, кардио, йоги и тренировок дома.</p>
+      </article>
+      <article class="benefit">
+        <div class="benefit-icon">⌕</div>
+        <h3>Понятная информация</h3>
+        <p>Описания и изображения помогают изучить назначение товаров перед выбором.</p>
+      </article>
+      <article class="benefit">
+        <div class="benefit-icon">♡</div>
+        <h3>Фокус на потребностях</h3>
+        <p>Структура каталога помогает подобрать инвентарь с учётом личных целей и предпочтений.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container faq-wrap">
+    <div class="eyebrow">МЫ ГОТОВЫ ПОМОЧЬ</div>
+    <h2>Часто задаваемые вопросы</h2>
+    <p class="section-intro">Короткие ответы на вопросы о выборе товаров и работе магазина.</p>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Как выбрать подходящий спортивный товар?</summary>
+        <div class="faq-answer">Ориентируйтесь на цель тренировки, свой уровень подготовки и описание товара в каталоге. Если сомневаетесь, обратитесь за консультацией.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Как оформить заказ?</summary>
+        <div class="faq-answer">Добавьте выбранные товары в корзину и просмотрите её содержимое. Сайт является учебным демонстрационным проектом: оформление реального заказа не предусмотрено.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Можно ли получить консультацию?</summary>
+        <div class="faq-answer">По вопросам выбора и характеристик товаров можно обратиться по демонстрационным контактам, указанным в разделе «Контакты».</div>
+      </details>
+      <details class="faq-item">
+        <summary>Как узнать характеристики товара?</summary>
+        <div class="faq-answer">Краткое описание и назначение приведены в карточке товара. Дополнительные характеристики следует уточнить у представителя магазина.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Сколько стоит доставка?</summary>
+        <div class="faq-answer">Стоимость и доступность доставки для проекта не заданы. Уточните эти сведения у представителей магазина.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Можно ли вернуть товар?</summary>
+        <div class="faq-answer">Условия возврата в учебном проекте не установлены. Порядок и возможность возврата необходимо уточнить у представителей магазина с учётом применимых правил.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Как связаться с магазином?</summary>
+        <div class="faq-answer">Используйте демонстрационные телефон и электронную почту, указанные в разделе «Контакты». Они предназначены только для учебного проекта.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section contacts" id="contacts">
+  <div class="container contact-grid">
+    <div>
+      <div class="eyebrow">ОСТАЛИСЬ ВОПРОСЫ?</div>
+      <h2>Свяжитесь с нами</h2>
+      <p class="section-intro">Будем рады помочь разобраться в ассортименте FitLife. Контактные данные приведены для демонстрации учебного проекта.</p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-line">
+        <div class="contact-icon">☎</div>
+        <div><small>Телефон</small><a href="tel:+77001234567">+7 (700) 123-45-67</a></div>
+      </div>
+      <div class="contact-line">
+        <div class="contact-icon">✉</div>
+        <div><small>Электронная почта</small><a href="mailto:info@fitlife.kz">info@fitlife.kz</a></div>
+      </div>
+      <p class="demo-note">FitLife — учебный интернет-магазин. Контактные данные демонстрационные и не являются подтверждёнными реальными реквизитами.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <a class="brand" href="#home"><span class="brand-mark">F</span>Fit<span>Life</span></a>
+    <span>Спортивные товары для активной жизни.</span>
+    <span>© <span id="year"></span> FitLife · Учебный проект</span>
+  </div>
+</footer>
+<div class="overlay" id="overlay"></div>
+
+<aside class="cart-panel" id="cartPanel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <div class="cart-header">
+    <h2 id="cartTitle">Ваша корзина</h2>
+    <button class="icon-button" id="closeCart" type="button" aria-label="Закрыть корзину">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="total-row">
+      <span>Итого</span>
+      <span id="cartTotal">0 ₸</span>
+    </div>
+    <button class="btn" id="clearCart" type="button">Очистить корзину</button>
+    <p class="cart-disclaimer">Демонстрационная корзина. Оформление и оплата заказа не выполняются.</p>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+const products = [
+  {
+    id: 1,
+    name: "Гантели",
+    category: "Силовой инвентарь",
+    price: 12990,
+    description: "Гантели для силовых упражнений на мышцы рук, плеч и груди. Подходят для домашних занятий и тренировок в зале.",
+    image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=700&q=80",
+    alt: "Гантели для силовых тренировок"
+  },
+  {
+    id: 2,
+    name: "Коврик для йоги",
+    category: "Йога и восстановление",
+    price: 8990,
+    description: "Коврик для йоги, растяжки и упражнений на полу. Помогает организовать комфортное пространство для занятий.",
+    image: "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?auto=format&fit=crop&w=700&q=80",
+    alt: "Коврик для занятий йогой"
+  },
+  {
+    id: 3,
+    name: "Фитнес-резинки",
+    category: "Фитнес и кардио",
+    price: 4990,
+    description: "Эластичные ленты для упражнений на разные группы мышц. Подходят для разминки, силовых комплексов и домашних тренировок.",
+    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=700&q=80",
+    alt: "Эластичные фитнес-резинки"
+  },
+  {
+    id: 4,
+    name: "Спортивная бутылка",
+    category: "Аксессуары",
+    price: 5990,
+    description: "Бутылка для воды, которую удобно брать на тренировку или прогулку. Практичный аксессуар для повседневной активности.",
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=700&q=80",
+    alt: "Спортивная бутылка для воды"
+  },
+  {
+    id: 5,
+    name: "Гиря",
+    category: "Силовой инвентарь",
+    price: 15990,
+    description: "Гиря для махов, приседаний и функциональных упражнений. Помогает разнообразить силовую нагрузку.",
+    image: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?auto=format&fit=crop&w=700&q=80",
+    alt: "Гиря для функционального тренинга"
+  },
+  {
+    id: 6,
+    name: "Скакалка",
+    category: "Фитнес и кардио",
+    price: 3490,
+    description: "Компактный аксессуар для кардиотренировок и разминки. Подходит для занятий дома и на открытом воздухе.",
+    image: "https://images.unsplash.com/photo-1434596922112-19c563067271?auto=format&fit=crop&w=700&q=80",
+    alt: "Скакалка для кардиотренировок"
+  },
+  {
+    id: 7,
+    name: "Массажный ролик",
+    category: "Йога и восстановление",
+    price: 7990,
+    description: "Ролик для самомассажа и упражнений на мобильность. Может использоваться в разминке и восстановительных занятиях.",
+    image: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=700&q=80",
+    alt: "Массажный ролик для восстановления"
+  },
+  {
+    id: 8,
+    name: "Упоры для отжиманий",
+    category: "Силовой инвентарь",
+    price: 6490,
+    description: "Упоры для отжиманий и упражнений с собственным весом. Помогают удобно расположить кисти во время выполнения движений.",
+    image: "https://images.unsplash.com/photo-1598971639058-fab3c3109a00?auto=format&fit=crop&w=700&q=80",
+    alt: "Упоры для отжиманий"
+  },
+  {
+    id: 9,
+    name: "Разборные гантели",
+    category: "Силовой инвентарь",
+    price: 24990,
+    description: "Разборные гантели для силовых упражнений с изменяемой конфигурацией отягощения. Подходят для разнообразных тренировочных комплексов.",
+    image: "https://images.unsplash.com/photo-1638536532686-d610adfc8e5b?auto=format&fit=crop&w=700&q=80",
+    alt: "Разборные гантели"
+  },
+  {
+    id: 10,
+    name: "Перчатки для фитнеса",
+    category: "Аксессуары",
+    price: 6990,
+    description: "Перчатки для занятий с гантелями и другим спортивным инвентарём. Дополняют экипировку для тренировок.",
+    image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=700&q=80",
+    alt: "Перчатки для фитнеса"
+  },
+  {
+    id: 11,
+    name: "Спортивная сумка",
+    category: "Аксессуары",
+    price: 19990,
+    description: "Сумка для переноски спортивной одежды, обуви и аксессуаров. Подходит для посещения зала и поездок.",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80",
+    alt: "Спортивная сумка"
+  },
+  {
+    id: 12,
+    name: "Степ-платформа",
+    category: "Фитнес и кардио",
+    price: 17990,
+    description: "Платформа для аэробных упражнений, степ-тренировок и функциональных комплексов. Подходит для занятий в помещении.",
+    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80",
+    alt: "Степ-тренировка на платформе"
+  },
+  {
+    id: 13,
+    name: "Ролик для пресса",
+    category: "Силовой инвентарь",
+    price: 5490,
+    description: "Компактный тренажёр для упражнений на мышцы живота и корпуса. Используется в тренировках с собственным весом.",
+    image: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=700&q=80",
+    alt: "Тренажёр-ролик для пресса"
+  },
+  {
+    id: 14,
+    name: "Гимнастический мат",
+    category: "Йога и восстановление",
+    price: 14990,
+    description: "Мат для гимнастики, растяжки и упражнений на полу. Помогает выделить удобную поверхность для занятий.",
+    image: "https://images.unsplash.com/photo-1518611012118-f0c5c9b8a6a0?auto=format&fit=crop&w=700&q=80",
+    alt: "Гимнастический мат для упражнений"
+  },
+  {
+    id: 15,
+    name: "Утяжелённый жилет",
+    category: "Силовой инвентарь",
+    price: 29990,
+    description: "Жилет с дополнительным отягощением для тренировок с собственным весом. Может использоваться в ходьбе и силовых упражнениях.",
+    image: "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=700&q=80",
+    alt: "Спортивный утяжелённый жилет"
+  }
+];
+
+const cart = new Map();
+
+const grid = document.getElementById("productGrid");
+const cartPanel = document.getElementById("cartPanel");
+const overlay = document.getElementById("overlay");
+const cartItems = document.getElementById("cartItems");
+const cartCount = document.getElementById("cartCount");
+const cartTotal = document.getElementById("cartTotal");
+const toast = document.getElementById("toast");
+
+const money = value =>
+  new Intl.NumberFormat("ru-RU").format(value) + " ₸";
+
+function renderProducts() {
+  const query = document.getElementById("searchInput")
+    .value.trim().toLocaleLowerCase("ru");
+
+  const category = document.getElementById("categoryFilter").value;
+
+  const shown = products.filter(product => {
+    const matchesCategory =
+      category === "all" || product.category === category;
+
+    const text = (
+      product.name + " " +
+      product.description + " " +
+      product.category
+    ).toLocaleLowerCase("ru");
+
+    return matchesCategory && text.includes(query);
+  });
+
+  if (shown.length === 0) {
+    grid.innerHTML =
+      '<div class="empty-results">По вашему запросу товары не найдены. Попробуйте изменить поиск или категорию.</div>';
+    return;
+  }
+
+  grid.innerHTML = shown.map(product => `
+    <article class="product-card">
+      <div class="product-image">
+        <img src="${product.image}" alt="${product.alt}" loading="lazy">
+      </div>
+      <div class="product-info">
+        <span class="category">${product.category}</span>
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <div class="product-bottom">
+          <span class="price">${money(product.price)}</span>
+          <button
+            class="add-button"
+            type="button"
+            data-add="${product.id}"
+            aria-label="Добавить товар «${product.name}» в корзину">
+            Добавить в корзину
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function addToCart(id) {
+  const product = products.find(item => item.id === id);
+
+  if (!product) return;
+
+  cart.set(id, (cart.get(id) || 0) + 1);
+  renderCart();
+  showToast("Товар добавлен в корзину");
+}
+
+function changeQuantity(id, delta) {
+  const next = (cart.get(id) || 0) + delta;
+
+  if (next <= 0) {
+    cart.delete(id);
+  } else {
+    cart.set(id, next);
+  }
+
+  renderCart();
+}
+
+function removeFromCart(id) {
+  cart.delete(id);
+  renderCart();
+}
+
+function renderCart() {
+  const entries = [...cart.entries()];
+
+  const count = entries.reduce(
+    (sum, [, quantity]) => sum + quantity, 0
+  );
+
+  const total = entries.reduce((sum, [id, quantity]) => {
+    const product = products.find(item => item.id === id);
+    return sum + product.price * quantity;
+  }, 0);
+
+  cartCount.textContent = count;
+  cartTotal.textContent = money(total);
+
+  if (entries.length === 0) {
+    cartItems.innerHTML = `
+      <div class="cart-empty">
+        <span>🛒</span>
+        <strong>Корзина пока пуста</strong>
+        <p>Добавьте товары из каталога, чтобы увидеть их здесь.</p>
+      </div>
+    `;
+    return;
+  }
+
+  cartItems.innerHTML = entries.map(([id, quantity]) => {
+    const product = products.find(item => item.id === id);
+
+    return `
+      <div class="cart-item">
+        <img src="${product.image}" alt="">
+        <div>
+          <h3>${product.name}</h3>
+          <p>${money(product.price)} за шт.</p>
+          <div class="quantity">
+            <button type="button"
+              data-change="${id}" data-delta="-1"
+              aria-label="Уменьшить количество">−</button>
+            <span>${quantity}</span>
+            <button type="button"
+              data-change="${id}" data-delta="1"
+              aria-label="Увеличить количество">+</button>
+          </div>
+        </div>
+        <button class="remove" type="button"
+          data-remove="${id}">Удалить</button>
+      </div>
+    `;
+  }).join("");
+}
+
+function openCart() {
+  cartPanel.classList.add("open");
+  overlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+  document.getElementById("closeCart").focus();
+}
+
+function closeCart() {
+  cartPanel.classList.remove("open");
+  overlay.classList.remove("active");
+  document.body.style.overflow = "";
+  document.getElementById("openCart").focus();
+}
+
+let toastTimer;
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
+
+grid.addEventListener("click", event => {
+  const button = event.target.closest("[data-add]");
+
+  if (button) {
+    addToCart(Number(button.dataset.add));
+  }
+});
+
+cartItems.addEventListener("click", event => {
+  const change = event.target.closest("[data-change]");
+  const remove = event.target.closest("[data-remove]");
+
+  if (change) {
+    changeQuantity(
+      Number(change.dataset.change),
+      Number(change.dataset.delta)
+    );
+  }
+
+  if (remove) {
+    removeFromCart(Number(remove.dataset.remove));
+  }
+});
+
+document.getElementById("openCart")
+  .addEventListener("click", openCart);
+
+document.getElementById("closeCart")
+  .addEventListener("click", closeCart);
+
+overlay.addEventListener("click", closeCart);
+
+document.getElementById("clearCart")
+  .addEventListener("click", () => {
+    if (cart.size === 0) {
+      showToast("Корзина уже пуста");
+      return;
+    }
+
+    cart.clear();
+    renderCart();
+    showToast("Корзина очищена");
+  });
+
+document.getElementById("searchInput")
+  .addEventListener("input", renderProducts);
+
+document.getElementById("categoryFilter")
+  .addEventListener("change", renderProducts);
+
+document.getElementById("menuToggle")
+  .addEventListener("click", event => {
+    const nav = document.getElementById("mainNav");
+    const opened = nav.classList.toggle("open");
+
+    event.currentTarget.setAttribute(
+      "aria-expanded", String(opened)
+    );
+
+    event.currentTarget.textContent = opened ? "×" : "☰";
+  });
+
+document.querySelectorAll("#mainNav a").forEach(link => {
+  link.addEventListener("click", () => {
+    document.getElementById("mainNav").classList.remove("open");
+
+    const toggle = document.getElementById("menuToggle");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.textContent = "☰";
+  });
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" &&
+      cartPanel.classList.contains("open")) {
+    closeCart();
+  }
+});
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+renderProducts();
+renderCart();
+</script>
+</body>
+</html>
